@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+</head> 
+
+</style>
+<body>    	
+<script src="d3.js"></script>
+<script>
+
+var data = [{"salesperson":"Macky Sall","sales":58.26},{"salesperson":"Idrissa Seck","sales":21.51},{"salesperson":"Ousmane Sonko","sales":15.67},{"salesperson":"Issa Sall","sales":4.07},{"salesperson":"Madické Niang","sales":1.48}];
+
+// set the dimensions and margins of the graph
+var margin = {top: 100, right: 100, bottom: 70, left: 150},
+    width = 900 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+// set the ranges
+var y = d3.scaleBand()
+          .range([height, 1])
+          .padding(0.1);
+
+var x = d3.scaleLinear()
+          .range([0, width]);   
+// append the svg object to the body of the page
+// append a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", 
+          "translate(" + margin.left + "," + margin.top + ")");
+
+  // format the data
+  data.forEach(function(d) {
+    d.sales = d.sales;
+  });
+  svg.append("rect").attr("x",650).attr("y",60).attr("height",20).attr("width", 20).style("fill", "#5b1e1e")
+	svg.append("rect").attr("x",650).attr("y",90).attr("height", 20).attr("width", 20).style("fill", "#FFA500")
+	svg.append("rect").attr("x",650).attr("y",120).attr("height", 20).attr("width", 20).style("fill", "#008000")
+	svg.append("rect").attr("x",650).attr("y",150).attr("height", 20).attr("width", 20).style("fill", "#AED4AE")
+	svg.append("rect").attr("x",650).attr("y",180).attr("height", 20).attr("width", 20).style("fill", "#4C4CFF")
+	
+	svg.append("text").attr("x", 675).attr("y", 70).text("Macky Sall").style("font-size", "15px").attr("alignment-baseline","middle")
+	svg.append("text").attr("x", 675).attr("y", 100).text("Idrissa Seck").style("font-size", "15px").attr("alignment-baseline","middle")
+	svg.append("text").attr("x", 675).attr("y", 130).text("Ousmane Sonko").style("font-size", "15px").attr("alignment-baseline","middle")
+	svg.append("text").attr("x", 675).attr("y", 160).text("Issa Sall").style("font-size", "15px").attr("alignment-baseline","middle")
+	svg.append("text").attr("x", 675).attr("y", 190).text("Madicke Niang").style("font-size", "15px").attr("alignment-baseline","middle")
+    text=svg.append("text")
+.attr("x",150)
+.attr("Y",1000)
+.text("résultat en %");
+
+
+
+  // Scale the range of the data in the domains
+  x.domain([0, d3.max(data, function(d){ return d.sales; })])
+  y.domain(data.map(function(d) { return d.salesperson; }));
+
+  //y.domain([0, d3.max(data, function(d) { return d.sales; })]);
+ 
+  // append the rectangles for the bar chart
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      //.attr("x", function(d) { return x(d.sales); })
+      .attr("width", function(d) {return x(d.sales); } )
+      .attr("y", function(d) { return y(d.salesperson); })
+      .attr("height", y.bandwidth())
+      .attr("fill",function(d){
+        if (d.salesperson =="Macky Sall")
+              { 
+               return "#5b1e1e"
+              }
+         if (d.salesperson =="Idrissa Seck")
+              { 
+                return "#FFA500"
+              } 
+         if (d.salesperson =="Ousmane Sonko")
+              { 
+               return "#008000"
+              } 
+         if (d.salesperson =="Issa Sall")
+              { 
+               return "#AED4AE"
+              } 
+         if (d.salesperson =="Madické Niang")
+              { 
+               return  "#4C4CFF"
+              }             
+       
+    }) ;
+  // add the x Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+  // add the y Axis
+  svg.append("g")
+      .call(d3.axisLeft(y));
+</script>
+<h2>  <center> résultat en % </center> </h2>
+</body>
